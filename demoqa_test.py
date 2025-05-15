@@ -38,6 +38,13 @@ def log(msg):
 
 # === Browser setup with options ===
 options = Options()
+
+# Add headless mode
+if args.headless:
+    options.add_argument("--headless")
+    options.add_argument("--window-size=1920,1080")
+
+# Add proxy settings
 if args.proxy and args.proxy_url:
     options.add_argument(f"--proxy-server={args.proxy_url}")
     log(f"Proxy set to: {args.proxy_url}")
@@ -45,6 +52,7 @@ elif args.proxy:
     options.add_argument(f"--proxy-server={DEFAULT_PROXY_URL}")
     log(f"Proxy set to default: {DEFAULT_PROXY_URL}")
 
+# Log final config
 log(f"Headless mode: {'ON' if args.headless else 'OFF'}")
 log(f"Proxy enabled: {'ON' if args.proxy else 'OFF'}")
 
@@ -89,7 +97,7 @@ def click_or_enter_element(elem):
     human_pause()
 
 # === Scroll page using keyboard (PageDown or PageUp) ===
-def keyboard_scroll(direction="down"): # Default is scroll down
+def keyboard_scroll(direction="down"):  # Default is scroll down
     body = driver.find_element(By.TAG_NAME, "body")
     key = Keys.PAGE_DOWN if direction == "down" else Keys.PAGE_UP
     body.send_keys(key)
@@ -97,16 +105,14 @@ def keyboard_scroll(direction="down"): # Default is scroll down
     log(f"Scrolled {direction} using keyboard")
 
 # === Random scroll by JS or keyboard in given direction ===
-def random_js_or_key_scroll(direction="down"): # Default is scroll down
-    if random.choice([True, False]):
-        log("Scrolling using JS...")
+def random_js_or_key_scroll(direction="down"):  # Default is scroll down
+    method = random.choice(["js", "keyboard"])
+    if method == "js":
         pixels = 250 if direction == "down" else -250 # -250 is scroll up
         driver.execute_script(f"window.scrollBy(0, {pixels});")
         log(f"Scrolled {direction} using JS")
     else:
-        log("Scrolling using keyboard...")
         keyboard_scroll(direction=direction)
-    human_pause()
 
 # === Smooth scroll to center the target element ===
 def scroll_to_element(elem):
@@ -146,15 +152,15 @@ try:
     log("Filling fields in random order...")
     random_field_order()
 
+    # Simple scroll down using random JS or Key
+    log("Random scroll down before targeting Submit button...")
+    random_js_or_key_scroll() # ("up") to scroll up
+
     # Submit the form
     submit_btn = wait.until(EC.element_to_be_clickable((By.ID, "submit")))
     scroll_to_element(submit_btn)
     log("Clicking Submit button...")
     click_or_enter_element(submit_btn)
-
-    # Simple scroll using random JS or Key
-    log("Random scroll up before targeting Submit button...")
-    random_js_or_key_scroll("up")
 
     # Wait for the output
     wait.until(lambda d: "name" in d.page_source)
