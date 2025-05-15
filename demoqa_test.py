@@ -19,7 +19,7 @@ DEFAULT_PROXY_URL = "http://8.210.117.141:8888"
 # === Command line arguments ===
 parser = argparse.ArgumentParser(description="demoqa.com test")
 parser.add_argument("--headless", action="store_true", default=DEFAULT_HEADLESS, help="Run browser in headless mode")
-parser.add_argument("--proxy", action="store_true", default=DEFAULT_USE_PROXY, help="Use proxy")
+parser.add_argument("--proxy", action="store_true", default=DEFAULT_USE_PROXY, help="Use proxy with DEFAULT_PROXY_URL")
 parser.add_argument("--proxy-url", type=str, help="Proxy server URL (e.g. http://ip:port or socks5://ip:port)")
 args = parser.parse_args()
 
