@@ -89,7 +89,7 @@ def click_or_enter_element(elem):
     human_pause()
 
 # === Scroll page using keyboard (PageDown or PageUp) ===
-def keyboard_scroll(direction="down"):
+def keyboard_scroll(direction="down"): # Default is scroll down
     body = driver.find_element(By.TAG_NAME, "body")
     key = Keys.PAGE_DOWN if direction == "down" else Keys.PAGE_UP
     body.send_keys(key)
@@ -97,10 +97,10 @@ def keyboard_scroll(direction="down"):
     log(f"Scrolled {direction} using keyboard")
 
 # === Random scroll by JS or keyboard in given direction ===
-def random_scroll(direction="down"):
+def random_js_or_key_scroll(direction="down"): # Default is scroll down
     if random.choice([True, False]):
         log("Scrolling using JS...")
-        pixels = 250 if direction == "down" else -250
+        pixels = 250 if direction == "down" else -250 # -250 is scroll up
         driver.execute_script(f"window.scrollBy(0, {pixels});")
         log(f"Scrolled {direction} using JS")
     else:
@@ -116,7 +116,7 @@ def scroll_to_element(elem):
 
 # === Fill input field with text ===
 def fill_field(by, field_id, text):
-    field = wait.until(EC.visibility_of_element_located((by, field_id)))
+    field = wait.until(EC.visibility_of_element_located((by, field_id))) # Wait for visibility
     move_mouse_to(field)
     actions.click(field).perform()
     random_behavior_pause()
@@ -154,7 +154,7 @@ try:
 
     # Simple scroll using random JS or Key
     log("Random scroll up before targeting Submit button...")
-    random_scroll("up")
+    random_js_or_key_scroll("up")
 
     # Wait for the output
     wait.until(lambda d: "name" in d.page_source)
