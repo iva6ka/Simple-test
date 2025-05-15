@@ -9,7 +9,6 @@
       python3 -m ensurepip --upgrade
       python3 -m pip install --upgrade pip
 
-
 2. Install required packages (only once):
    python3 -m pip install selenium
 
@@ -21,8 +20,13 @@
    --headless
        Run the browser in headless mode (invisible window).
 
-   --proxy http://ip:port
-       Use a proxy server (e.g., --proxy http://123.45.67.89:8080)
+   --proxy
+       Enable proxy usage.
+
+   --proxy-url URL
+       Set custom proxy address (e.g., socks5://123.45.67.89:8080)
+
+       If only --proxy is used, the default proxy will be applied.
 
 === Examples ===
 
@@ -32,8 +36,11 @@
 ▶ Headless mode:
    python3 demoqa_test.py --headless
 
-▶ With proxy:
-   python3 demoqa_test.py --proxy http://123.45.67.89:8080
+▶ With default proxy (DEFAULT_PROXY_URL from code):
+   python3 demoqa_test.py --proxy
 
-▶ Headless + proxy:
-   python3 demoqa_test.py --headless --proxy http://123.45.67.89:8080
+▶ With custom proxy:
+   python3 demoqa_test.py --proxy --proxy-url http://123.45.67.89:8080
+
+▶ Headless + custom proxy:
+   python3 demoqa_test.py --headless --proxy --proxy-url socks5://123.45.67.89:8080
